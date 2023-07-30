@@ -29,7 +29,7 @@ end)
 
 --Core Functions
 
-local function CreateShell(spawn, exitXYZH, model)
+local function CreateShell(spawn, exitXYZH, model) -- TEST THIS LEV-APARTMENTS
     local objects = {}
     local POIOffsets = {}
     POIOffsets.exit = exitXYZH
@@ -43,9 +43,15 @@ local function CreateShell(spawn, exitXYZH, model)
     end
     local house = CreateObject(model, spawn.x, spawn.y, spawn.z, false, false, false)
 
+    local spawnPointX = 0.089353
+    local spawnPointY = -2.67699
+    local spawnPointZ = 0.760894
+    local spawnPointH = 270.76
+
     FreezeEntityPosition(house, true)
     objects[#objects+1] = house
-    TeleportToInterior(spawn.x + POIOffsets.exit.x, spawn.y + POIOffsets.exit.y, spawn.z + POIOffsets.exit.z, POIOffsets.exit.h)
+    TeleportToInterior(spawn.x + spawnPointX, spawn.y + spawnPointY, spawn.z + spawnPointZ, spawnPointH)
+    
     return { objects, POIOffsets }
 end
 
@@ -57,15 +63,15 @@ end)
 
 exports('CreateApartmentFurnished', function(spawn)
 
-    local exit = json.decode('{"x": 1.5, "y": -10.0, "z": 0, "h":358.50}')
+    local exit = json.decode('{"x": 0.80353, "y": 1.94699, "z": 0.960894, "h": 270.76}')
     
-    local model = "furnitured_midapart"
+    local model = "lev_apartment_shell"
     local obj = CreateShell(spawn, exit, model)
     if obj and obj[2] then
-		obj[2].clothes = json.decode('{"x": -6.028, "y": -9.5, "z": 1.2, "h":2.263}')
-		obj[2].stash = json.decode('{"x": -7.305, "y": -3.922, "z": 0.5, "h":2.263}')
-		obj[2].logout = json.decode('{"x": -0.8, "y": 1.0, "z": 1.0, "h":2.263}')
-	end
+        obj[2].clothes = json.decode('{"x": -7.04442, "y": -2.97699, "z": 0.960894, "h": 181.75}')
+        obj[2].stash = json.decode('{"x": -3.04442, "y": 2.17699, "z": 0.960894, "h": 181.75}')
+        obj[2].logout = json.decode('{"x": 1.010176, "y": 2.29546, "z": 0.960894, "h": 91.18}')
+    end
     if IsNew then
         SetTimeout(750, function()
             TriggerEvent('qb-clothes:client:CreateFirstCharacter')
@@ -74,6 +80,54 @@ exports('CreateApartmentFurnished', function(spawn)
     end
     return { obj[1], obj[2] }
 end)
+
+-- --Core Functions
+
+-- local function CreateShell(spawn, exitXYZH, model) -- OLD VERSION
+--     local objects = {}
+--     local POIOffsets = {}
+--     POIOffsets.exit = exitXYZH
+--     DoScreenFadeOut(500)
+--     while not IsScreenFadedOut() do
+--         Wait(10)
+--     end
+--     RequestModel(model)
+--     while not HasModelLoaded(model) do
+--         Wait(1000)
+--     end
+--     local house = CreateObject(model, spawn.x, spawn.y, spawn.z, false, false, false)
+
+--     FreezeEntityPosition(house, true)
+--     objects[#objects+1] = house
+--     TeleportToInterior(spawn.x + POIOffsets.exit.x, spawn.y + POIOffsets.exit.y, spawn.z + POIOffsets.exit.z, POIOffsets.exit.h)
+--     return { objects, POIOffsets }
+-- end
+
+-- exports('CreateShell', function(spawn, exitXYZH, model)
+--     return CreateShell(spawn, exitXYZH, model)
+-- end)
+
+-- -- Starting Apartment
+
+-- exports('CreateApartmentFurnished', function(spawn)
+
+--     local exit = json.decode('{"x": 1.5, "y": -10.0, "z": 0, "h":358.50}')
+    
+--     local model = "furnitured_midapart"
+--     local obj = CreateShell(spawn, exit, model)
+--     if obj and obj[2] then
+-- 		obj[2].clothes = json.decode('{"x": -6.028, "y": -9.5, "z": 1.2, "h":2.263}')
+-- 		obj[2].stash = json.decode('{"x": -7.305, "y": -3.922, "z": 0.5, "h":2.263}')
+-- 		obj[2].logout = json.decode('{"x": -0.8, "y": 1.0, "z": 1.0, "h":2.263}')
+-- 	end
+--     if IsNew then
+--         SetTimeout(750, function()
+--             TriggerEvent('qb-clothes:client:CreateFirstCharacter')
+--             IsNew = false
+--         end)
+--     end
+--     return { obj[1], obj[2] }
+-- end)
 
 exports('CreateHouseRobbery', function(spawn)
     local exit = json.decode('{"x": 1.46, "y": -10.33, "z": 1.06, "h": 0.39}')
